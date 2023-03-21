@@ -1,3 +1,3 @@
-{"First Name": "Maria","Last Name": "Hall"}
-{"First Name": "John","Last Name": "Stephens"}
-{"First Name": "Urs","Last Name": "Frei"}
+{"First Name": "Maria", "Last Name": "Hall", "Item Type": "Public"}
+{"First Name": "John", "Last Name": "Stephens", "Item Type": "Secret"}
+{"First Name": "Urs", "Last Name": "Frei", "Item Type": "Confidential"}

@@ -14,5 +14,6 @@ public class InputItem {
     private String lastName;
     @JsonProperty("First Name")
     private String firstName;
-
+    @JsonProperty("Item Type")
+    private String itemType;
 }

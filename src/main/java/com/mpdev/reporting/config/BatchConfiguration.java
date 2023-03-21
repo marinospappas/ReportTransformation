@@ -27,6 +27,11 @@ import javax.sql.DataSource;
 public class BatchConfiguration {
 
     private final ObjectMapper objectMapper = new ObjectMapper();
+    private final InputItemProcessor inputItemProcessor;
+
+    public BatchConfiguration(InputItemProcessor inputItemProcessor) {
+        this.inputItemProcessor = inputItemProcessor;
+    }
 
     @Bean
     public FlatFileItemReader<InputItem> readerCsv() {
@@ -51,15 +56,10 @@ public class BatchConfiguration {
     }
 
     @Bean
-    public InputItemProcessor inputItemProcessor() {
-        return new InputItemProcessor();
-    }
-
-    @Bean
     public JdbcBatchItemWriter<OutputItem> writer(DataSource dataSource) {
         return new JdbcBatchItemWriterBuilder<OutputItem>()
                 .itemSqlParameterSourceProvider(new BeanPropertyItemSqlParameterSourceProvider<>())
-                .sql("INSERT INTO report (first_name, last_name) VALUES (:firstName, :lastName)")
+                .sql("INSERT INTO report (last_name, first_name, item_type) VALUES (:lastName, :firstName, :itemType)")
                 .dataSource(dataSource)
                 .build();
     }
@@ -81,7 +81,7 @@ public class BatchConfiguration {
         return new StepBuilder("step1", jobRepository)
                 .<InputItem, OutputItem> chunk(10, transactionManager)
                 .reader(readerJson())
-                .processor(inputItemProcessor())
+                .processor(inputItemProcessor)
                 .writer(writer)
                 .build();
     }
