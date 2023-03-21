@@ -1,7 +1,8 @@
 package com.mpdev.reporting.config;
 
-import com.mpdev.reporting.inreport.InputItem;
-import com.mpdev.reporting.outreport.OutputItem;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.mpdev.reporting.report.inreport.InputItem;
+import com.mpdev.reporting.report.outreport.OutputItem;
 import com.mpdev.reporting.processor.InputItemProcessor;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
@@ -25,16 +26,27 @@ import javax.sql.DataSource;
 @Configuration
 public class BatchConfiguration {
 
+    private final ObjectMapper objectMapper = new ObjectMapper();
+
     @Bean
-    public FlatFileItemReader<InputItem> reader() {
+    public FlatFileItemReader<InputItem> readerCsv() {
         return new FlatFileItemReaderBuilder<InputItem>()
-                .name("personItemReader")
+                .name("csvItemReader")
                 .resource(new ClassPathResource("input-data.csv"))
                 .delimited()
                 .names("firstName", "lastName")
                 .fieldSetMapper(new BeanWrapperFieldSetMapper<>() {{
                     setTargetType(InputItem.class);
                 }})
+                .build();
+    }
+
+    @Bean
+    public FlatFileItemReader<InputItem> readerJson() {
+        return new FlatFileItemReaderBuilder<InputItem>()
+                .name("jsonItemReader")
+                .resource(new ClassPathResource("input-data.json"))
+                .lineMapper((line, lineNumber) -> objectMapper.readValue(line, InputItem.class))
                 .build();
     }
 
@@ -68,7 +80,7 @@ public class BatchConfiguration {
                      PlatformTransactionManager transactionManager, JdbcBatchItemWriter<OutputItem> writer) {
         return new StepBuilder("step1", jobRepository)
                 .<InputItem, OutputItem> chunk(10, transactionManager)
-                .reader(reader())
+                .reader(readerJson())
                 .processor(inputItemProcessor())
                 .writer(writer)
                 .build();

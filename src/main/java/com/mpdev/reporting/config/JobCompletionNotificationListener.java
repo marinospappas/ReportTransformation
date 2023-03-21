@@ -1,6 +1,6 @@
 package com.mpdev.reporting.config;
 
-import com.mpdev.reporting.outreport.OutputItem;
+import com.mpdev.reporting.report.outreport.OutputItem;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.core.BatchStatus;
 import org.springframework.batch.core.JobExecution;

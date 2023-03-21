@@ -1,7 +1,7 @@
 package com.mpdev.reporting.processor;
 
-import com.mpdev.reporting.inreport.InputItem;
-import com.mpdev.reporting.outreport.OutputItem;
+import com.mpdev.reporting.report.inreport.InputItem;
+import com.mpdev.reporting.report.outreport.OutputItem;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.item.ItemProcessor;
 
