@@ -4,7 +4,8 @@ public enum ItemType {
 
     Public("P"),
     Confidential("C"),
-    Secret("S");
+    Secret("S"),
+    None("N");
 
     private final String abbreviation;
 

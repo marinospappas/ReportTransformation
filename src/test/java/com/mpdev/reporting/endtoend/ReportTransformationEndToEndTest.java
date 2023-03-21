@@ -18,7 +18,7 @@ class ReportTransformationEndToEndTest {
 	private JdbcTemplate jdbcTemplate;
 
 	@Test
-	@DisplayName("Database rows must be created with correct values")
+	@DisplayName("Database rows are created with correct values")
 	void testFrontToBack() {
 		List<OutputItem> outputList = jdbcTemplate.query("SELECT last_name, first_name, item_type FROM report",
 				(rs, row) -> new OutputItem(
