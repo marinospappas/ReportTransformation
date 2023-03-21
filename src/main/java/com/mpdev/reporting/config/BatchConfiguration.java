@@ -16,11 +16,13 @@ import org.springframework.batch.item.file.FlatFileItemReader;
 import org.springframework.batch.item.file.builder.FlatFileItemReaderBuilder;
 import org.springframework.batch.item.file.mapping.BeanWrapperFieldSetMapper;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.transaction.PlatformTransactionManager;
 
 import javax.sql.DataSource;
 
+@Configuration
 public class BatchConfiguration {
 
     @Bean
@@ -45,24 +47,24 @@ public class BatchConfiguration {
     public JdbcBatchItemWriter<OutputItem> writer(DataSource dataSource) {
         return new JdbcBatchItemWriterBuilder<OutputItem>()
                 .itemSqlParameterSourceProvider(new BeanPropertyItemSqlParameterSourceProvider<>())
-                .sql("INSERT INTO people (first_name, last_name) VALUES (:firstName, :lastName)")
+                .sql("INSERT INTO report (first_name, last_name) VALUES (:firstName, :lastName)")
                 .dataSource(dataSource)
                 .build();
     }
 
     @Bean
     public Job importUserJob(JobRepository jobRepository,
-                             JobCompletionNotificationListener listener, Step step) {
+                             JobCompletionNotificationListener listener, Step step1) {
         return new JobBuilder("importUserJob", jobRepository)
                 .incrementer(new RunIdIncrementer())
                 .listener(listener)
-                .flow(step)
+                .flow(step1)
                 .end()
                 .build();
     }
 
     @Bean
-    public Step step(JobRepository jobRepository,
+    public Step step1(JobRepository jobRepository,
                      PlatformTransactionManager transactionManager, JdbcBatchItemWriter<OutputItem> writer) {
         return new StepBuilder("step1", jobRepository)
                 .<InputItem, OutputItem> chunk(10, transactionManager)
