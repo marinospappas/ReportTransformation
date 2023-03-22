@@ -43,11 +43,8 @@ public class ReportTranformation {
 
     public String transformField(String fieldName, InputItem inputItem) {
         var transformationObject = getTransformationObject(fieldName, inputItem);
-        if (Objects.isNull(transformationObject)) {
-            log.debug("no transformation method in map for field {} contract type {} jurisdiction {}",
-                    fieldName, inputItem.getContractType(), inputItem.getJurisdiction());
+        if (Objects.isNull(transformationObject))
             return EMPTY;
-        }
         try {
             return (String) transformationObject.getMethod().invoke(transformationObject.getTransfromer(), inputItem);
         }
@@ -71,6 +68,7 @@ public class ReportTranformation {
             return transformerMapData;
         if ((transformerMapData = transformationMethodMap.get(new TransformerMapKey(fieldName, contractType, jurisdiction))) != null)
             return transformerMapData;
+        log.debug("no transformation method in map for field {} contract type {} jurisdiction {}", fieldName, contractType, jurisdiction);
         return null;
     }
 }
