@@ -67,7 +67,7 @@ public class BatchConfiguration {
     @Bean
     public Job importUserJob(JobRepository jobRepository,
                              JobCompletionNotificationListener listener, Step step1) {
-        return new JobBuilder("importUserJob", jobRepository)
+        return new JobBuilder("transformReport", jobRepository)
                 .incrementer(new RunIdIncrementer())
                 .listener(listener)
                 .flow(step1)
