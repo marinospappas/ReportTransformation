@@ -1,4 +1,4 @@
-package com.mpdev.reporting.processor.transformation;
+package com.mpdev.reporting.transformation;
 
 import com.mpdev.reporting.report.inreport.InputItem;
 import io.micrometer.common.util.StringUtils;
@@ -39,6 +39,10 @@ public class ReportTranformation {
             }
         }
         transformationMethodMap = Collections.unmodifiableMap(methodMap);
+    }
+
+    public Map<TransformerMapKey,TransformerMapData> getTransformationMethodMap() {
+        return transformationMethodMap;
     }
 
     public String transformField(String fieldName, InputItem inputItem) {

@@ -1,10 +1,12 @@
 package com.mpdev.reporting.integration;
 
 import com.mpdev.reporting.processor.InputItemProcessor;
+import com.mpdev.reporting.processor.Transformer;
 import com.mpdev.reporting.processor.bytype.ConfidentialItemProcessor;
 import com.mpdev.reporting.processor.bytype.ProcessorByTypeFactory;
 import com.mpdev.reporting.processor.bytype.PublicItemProcessor;
 import com.mpdev.reporting.processor.bytype.SecretItemProcessor;
+import com.mpdev.reporting.transformation.ReportTranformation;
 import com.mpdev.reporting.report.ItemType;
 import com.mpdev.reporting.report.inreport.InputItem;
 import org.junit.jupiter.api.BeforeEach;
@@ -16,8 +18,6 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.mockito.ArgumentMatchers.any;
-
 
 public class TransformerIntegrationTest {
 
@@ -29,8 +29,9 @@ public class TransformerIntegrationTest {
     void setup() {
         inputItem = podamFactory.manufacturePojo(InputItem.class);
         ProcessorByTypeFactory processorByTypeFactory;
+        ReportTranformation reportTranformation = new ReportTranformation(List.of(new Transformer()));
         processorByTypeFactory = new ProcessorByTypeFactory(List.of(
-                new PublicItemProcessor(), new ConfidentialItemProcessor(), new SecretItemProcessor()
+                new PublicItemProcessor(reportTranformation), new ConfidentialItemProcessor(), new SecretItemProcessor()
         ));
         inputItemProcessor = new InputItemProcessor(processorByTypeFactory);
     }

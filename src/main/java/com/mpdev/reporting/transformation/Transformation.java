@@ -1,4 +1,4 @@
-package com.mpdev.reporting.processor.transformation;
+package com.mpdev.reporting.transformation;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;

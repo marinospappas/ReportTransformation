@@ -1,5 +1,6 @@
 package com.mpdev.reporting.processor.bytype;
 
+import com.mpdev.reporting.transformation.ReportTranformation;
 import com.mpdev.reporting.report.ItemType;
 import com.mpdev.reporting.report.inreport.InputItem;
 import com.mpdev.reporting.report.outreport.OutputItem;
@@ -10,6 +11,12 @@ import org.springframework.stereotype.Component;
 @Component
 public class PublicItemProcessor implements TypeSpecificProcessor {
 
+    private final ReportTranformation reportTranformation;
+
+    public PublicItemProcessor(ReportTranformation reportTranformation) {
+        this.reportTranformation = reportTranformation;
+    }
+
     @Override
     public ItemType getProcessorType() {
         return ItemType.Public;
@@ -19,14 +26,12 @@ public class PublicItemProcessor implements TypeSpecificProcessor {
     public OutputItem process(final InputItem input) {
 
         log.info("Executing Public item processor");
+        var outputItem = new OutputItem();
 
-        final String firstName = input.getFirstName().toUpperCase();
-        final String lastName = input.getLastName().toUpperCase();
+        outputItem.setFirstName(reportTranformation.transformField("firstName", input));
+        outputItem.setLastName(reportTranformation.transformField("lastName", input));
 
-        return OutputItem.builder()
-                .firstName(firstName)
-                .lastName(lastName)
-                .build();
+        return outputItem;
     }
 
 }

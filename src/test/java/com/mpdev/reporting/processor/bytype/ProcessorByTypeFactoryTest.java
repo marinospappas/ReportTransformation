@@ -1,5 +1,7 @@
 package com.mpdev.reporting.processor.bytype;
 
+import com.mpdev.reporting.processor.Transformer;
+import com.mpdev.reporting.transformation.ReportTranformation;
 import com.mpdev.reporting.report.ItemType;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -10,10 +12,12 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class ProcessorByTypeFactoryTest {
 
+    ReportTranformation reportTranformation = new ReportTranformation(List.of(new Transformer()));
+
     private final ProcessorByTypeFactory processorByTypeFactory = new ProcessorByTypeFactory(List.of(
             new ConfidentialItemProcessor(),
             new SecretItemProcessor(),
-            new PublicItemProcessor()
+            new PublicItemProcessor(reportTranformation)
     ));
 
     @Test
