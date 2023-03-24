@@ -32,5 +32,6 @@ public class ConfidentialProcessorTest {
         var output = confidentialItemProcessor.process(inputItem);
         assertEquals(inputItem.getFirstName().toUpperCase(), output.getFirstName());
         assertEquals(inputItem.getLastName().toUpperCase().substring(0,1), output.getLastName());
+        assertEquals(inputItem.getJurisdiction().toUpperCase(), output.getJurisdiction());
     }
 }

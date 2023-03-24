@@ -32,5 +32,6 @@ public class PublicProcessorTest {
         var output = publicItemProcessor.process(inputItem);
         assertEquals(inputItem.getFirstName().toUpperCase(), output.getFirstName());
         assertEquals(inputItem.getLastName().toUpperCase(), output.getLastName());
+        assertEquals(inputItem.getJurisdiction().toUpperCase(), output.getJurisdiction());
     }
 }

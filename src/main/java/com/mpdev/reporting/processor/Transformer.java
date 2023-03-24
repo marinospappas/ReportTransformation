@@ -25,6 +25,6 @@ public class Transformer implements ReportTransformer {
 
     @Transformation(fieldName = "jurisdiction")
     public String getJurisdiction(InputItem inputItem) {
-        return inputItem.getJurisdiction();
+        return inputItem.getJurisdiction().toUpperCase();
     }
 }

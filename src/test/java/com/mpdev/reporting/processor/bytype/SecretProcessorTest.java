@@ -32,5 +32,6 @@ public class SecretProcessorTest {
         var output = secretItemProcessor.process(inputItem);
         assertEquals(inputItem.getFirstName().toUpperCase().substring(0,1), output.getFirstName());
         assertEquals(inputItem.getLastName().toUpperCase().substring(0,1), output.getLastName());
+        assertEquals(inputItem.getJurisdiction().toUpperCase(), output.getJurisdiction());
     }
 }
