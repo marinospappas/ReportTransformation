@@ -1,9 +1,11 @@
 package com.mpdev.reporting.validation;
 
+import javax.validation.groups.Default;
+
 public class ValidationGroups {
-    public interface SecretRecord {}
-    public interface ConfidentialRecord {}
-    public interface PublicRecord {}
+    public interface SecretRecord extends Default {}
+    public interface ConfidentialRecord extends Default {}
+    public interface PublicRecord extends Default {}
 
     public interface SecretRecordUS extends SecretRecord {}
     public interface ConfidentialRecordUS extends ConfidentialRecord {}

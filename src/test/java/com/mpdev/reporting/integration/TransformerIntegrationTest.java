@@ -10,6 +10,7 @@ import com.mpdev.reporting.transformation.ReportTranformation;
 import com.mpdev.reporting.report.ItemType;
 import com.mpdev.reporting.report.inreport.InputItem;
 import com.mpdev.reporting.validation.OutputRecordValidator;
+import com.mpdev.reporting.validation.OutputRecordValidatorTest;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;

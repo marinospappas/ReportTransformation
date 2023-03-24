@@ -5,5 +5,6 @@ CREATE TABLE report  (
     contract_id VARCHAR(10),
     last_name VARCHAR(20),
     first_name VARCHAR(20),
-    item_type VARCHAR(2)
+    item_type VARCHAR(2),
+    jurisdiction VARCHAR(10)
 );

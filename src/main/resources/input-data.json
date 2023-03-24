@@ -1,3 +1,3 @@
-{"Contract Id": "A.123.99", "First Name": "Maria", "Last Name": "Hall", "Item Type": "Public"}
-{"Contract Id": "B.448.85", "First Name": "John", "Last Name": "Stephens", "Item Type": "Secret"}
-{"Contract Id": "B.665.77", "First Name": "Urs", "Last Name": "Frei", "Item Type": "Confidential"}
+{"Contract Id": "A.123.99", "First Name": "Maria", "Last Name": "Hall", "Item Type": "Public", "Jurisdiction": "UK"}
+{"Contract Id": "B.448.85", "First Name": "John", "Last Name": "Stephens", "Item Type": "Secret", "Jurisdiction": "US"}
+{"Contract Id": "B.665.77", "First Name": "Urs", "Last Name": "Frei", "Item Type": "Confidential", "Jurisdiction": "CH"}

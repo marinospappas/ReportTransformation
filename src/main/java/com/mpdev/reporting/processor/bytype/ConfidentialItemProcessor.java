@@ -31,6 +31,7 @@ public class ConfidentialItemProcessor implements TypeSpecificProcessor {
         outputItem.setContractId(reportTranformation.transformField("contractId", input));
         outputItem.setFirstName(reportTranformation.transformField("firstName", input));
         outputItem.setLastName(reportTranformation.transformField("lastName", input).substring(0,1));
+        outputItem.setJurisdiction(reportTranformation.transformField("jurisdiction", input));
 
         return outputItem;
     }

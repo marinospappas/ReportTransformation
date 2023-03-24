@@ -43,7 +43,8 @@ public class InputItemProcessor implements ItemProcessor<InputItem, OutputItem> 
             transformedRecord.setItemType(itemType.getAbbreviation());
             log.info("Transformed input {} to {}", input, transformedRecord);
             // validation
-            if (!outputRecordValidator.validate(transformedRecord))
+            var validationResults = outputRecordValidator.validate(transformedRecord);
+            if (validationResults.size() > 0)
                 return null;
         }
         return transformedRecord;

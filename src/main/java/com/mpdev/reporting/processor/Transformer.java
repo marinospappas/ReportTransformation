@@ -22,4 +22,9 @@ public class Transformer implements ReportTransformer {
     public String getLastName(InputItem inputItem) {
         return inputItem.getLastName().toUpperCase();
     }
+
+    @Transformation(fieldName = "jurisdiction")
+    public String getJurisdiction(InputItem inputItem) {
+        return inputItem.getJurisdiction();
+    }
 }
