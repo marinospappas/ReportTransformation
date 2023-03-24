@@ -20,19 +20,23 @@ class ReportTransformationEndToEndTest {
 	@Test
 	@DisplayName("Database rows are created with correct values")
 	void testFrontToBack() {
-		List<OutputItem> outputList = jdbcTemplate.query("SELECT last_name, first_name, item_type FROM report",
+		List<OutputItem> outputList = jdbcTemplate.query("SELECT * FROM report",
 				(rs, row) -> new OutputItem(
-						rs.getString(1),
 						rs.getString(2),
-						rs.getString(3))
+						rs.getString(3),
+						rs.getString(4),
+						rs.getString(5))
 		);
 		assertEquals(3, outputList.size());
+		assertEquals("A.123.99", outputList.get(0).getContractId());
 		assertEquals("MARIA", outputList.get(0).getFirstName());
 		assertEquals("HALL", outputList.get(0).getLastName());
 		assertEquals("P", outputList.get(0).getItemType());
+		assertEquals("B.448.85", outputList.get(1).getContractId());
 		assertEquals("J", outputList.get(1).getFirstName());
 		assertEquals("S", outputList.get(1).getLastName());
 		assertEquals("S", outputList.get(1).getItemType());
+		assertEquals("B.665.77", outputList.get(2).getContractId());
 		assertEquals("URS", outputList.get(2).getFirstName());
 		assertEquals("F", outputList.get(2).getLastName());
 		assertEquals("C", outputList.get(2).getItemType());

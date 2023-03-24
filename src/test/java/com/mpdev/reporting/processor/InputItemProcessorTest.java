@@ -4,16 +4,14 @@ import com.mpdev.reporting.processor.bytype.*;
 import com.mpdev.reporting.report.ItemType;
 import com.mpdev.reporting.report.inreport.InputItem;
 import com.mpdev.reporting.report.outreport.OutputItem;
+import com.mpdev.reporting.validation.OutputRecordValidator;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
-import org.junit.jupiter.params.provider.ValueSource;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import uk.co.jemos.podam.api.PodamFactoryImpl;
 
@@ -22,7 +20,6 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
-import static org.mockito.MockitoAnnotations.initMocks;
 
 
 public class InputItemProcessorTest {
@@ -35,6 +32,8 @@ public class InputItemProcessorTest {
     private PublicItemProcessor publicItemProcessor;
     @Mock
     private ConfidentialItemProcessor confidentialItemProcessor;
+    @Mock
+    private OutputRecordValidator outputRecordValidator;
     private AutoCloseable closeable;
     private final PodamFactoryImpl podamFactory = new PodamFactoryImpl();
 
@@ -47,12 +46,13 @@ public class InputItemProcessorTest {
         when(confidentialItemProcessor.getProcessorType()).thenReturn(ItemType.Confidential);
         when(secretItemProcessor.process(any(InputItem.class))).thenReturn(new OutputItem());
         when(secretItemProcessor.getProcessorType()).thenReturn(ItemType.Secret);
+        when(outputRecordValidator.validate(any(OutputItem.class))).thenReturn(true);
         inputItem = podamFactory.manufacturePojo(InputItem.class);
         ProcessorByTypeFactory processorByTypeFactory;
         processorByTypeFactory = new ProcessorByTypeFactory(List.of(
                 secretItemProcessor, confidentialItemProcessor, publicItemProcessor
         ));
-        inputItemProcessor = new InputItemProcessor(processorByTypeFactory);
+        inputItemProcessor = new InputItemProcessor(processorByTypeFactory, outputRecordValidator);
     }
 
     @AfterEach
@@ -101,6 +101,14 @@ public class InputItemProcessorTest {
     @CsvSource(nullValues = "n/a", value = {"n/a", "''", "xxxxxxx", "1234"})
     void testInvalidInputType(String inputType) {
         inputItem.setItemType(inputType);
+        var output = inputItemProcessor.process(inputItem);
+        assertNull(output);
+    }
+
+    @Test
+    @DisplayName("When output item validation fails then no Output is produced")
+    void testValidationException() {
+        when(outputRecordValidator.validate(any(OutputItem.class))).thenReturn(false);
         var output = inputItemProcessor.process(inputItem);
         assertNull(output);
     }

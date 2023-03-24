@@ -14,11 +14,9 @@ import org.junit.jupiter.api.Test;
 import uk.co.jemos.podam.api.PodamFactoryImpl;
 
 import java.lang.reflect.Field;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.mock;
@@ -58,7 +56,7 @@ public class ReportTransformationTest {
 
     @Test
     @DisplayName("Field name supplied in 'transformField' method call must be valid field in OutputItem")
-    void testTransformFieldUsesCorrectfieldNames() {
+    void testTransformFieldUsesCorrectFieldNames() {
         var outputFieldsList = Arrays.stream(OutputItem.class.getDeclaredFields()).map(Field::getName).toList();
         List<String> transformedFields = new ArrayList<>();
         ReportTranformation reportTranformation1 = mock(ReportTranformation.class);
@@ -74,5 +72,12 @@ public class ReportTransformationTest {
                     "wrong field name " + transformedField + " (parameter to transformField call)")
 
         );
+        // also each field must be transformed only once
+        var fieldsAppearingMoreThanOnce = transformedFields.stream()
+                .filter(field -> Collections.frequency(transformedFields, field) > 1)
+                .distinct().toList();
+        transformedFields.forEach(field -> assertFalse(fieldsAppearingMoreThanOnce.contains(field),
+                field + " is specified as parameter to transform method more than once"));
+        assertEquals(0, fieldsAppearingMoreThanOnce.size());
     }
 }

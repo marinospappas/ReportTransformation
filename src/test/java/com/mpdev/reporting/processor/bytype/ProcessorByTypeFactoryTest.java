@@ -15,8 +15,8 @@ public class ProcessorByTypeFactoryTest {
     ReportTranformation reportTranformation = new ReportTranformation(List.of(new Transformer()));
 
     private final ProcessorByTypeFactory processorByTypeFactory = new ProcessorByTypeFactory(List.of(
-            new ConfidentialItemProcessor(),
-            new SecretItemProcessor(),
+            new ConfidentialItemProcessor(reportTranformation),
+            new SecretItemProcessor(reportTranformation),
             new PublicItemProcessor(reportTranformation)
     ));
 

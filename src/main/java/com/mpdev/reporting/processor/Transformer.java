@@ -8,6 +8,11 @@ import org.springframework.stereotype.Component;
 @Component
 public class Transformer implements ReportTransformer {
 
+    @Transformation(fieldName = "contractId")
+    public String getContractId(InputItem inputItem) {
+        return inputItem.getContractId().toUpperCase();
+    }
+
     @Transformation(fieldName = "firstName")
     public String getFirstName(InputItem inputItem) {
         return inputItem.getFirstName().toUpperCase();

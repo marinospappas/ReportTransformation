@@ -25,11 +25,12 @@ public class JobCompletionNotificationListener implements JobExecutionListener {
         if(jobExecution.getStatus() == BatchStatus.COMPLETED) {
             log.info("*** Report Transformation completed");
 
-            jdbcTemplate.query("SELECT last_name, first_name, item_type FROM report",
+            jdbcTemplate.query("SELECT * FROM report",
                     (rs, row) -> new OutputItem(
-                            rs.getString(1),
                             rs.getString(2),
-                            rs.getString(3))
+                            rs.getString(3),
+                            rs.getString(4),
+                            rs.getString(5))
             ).forEach(item -> log.info("Transformed item in db: {}", item));
         }
     }

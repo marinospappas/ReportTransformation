@@ -28,6 +28,7 @@ public class PublicItemProcessor implements TypeSpecificProcessor {
         log.info("Executing Public item processor");
         var outputItem = new OutputItem();
 
+        outputItem.setContractId(reportTranformation.transformField("contractId", input));
         outputItem.setFirstName(reportTranformation.transformField("firstName", input));
         outputItem.setLastName(reportTranformation.transformField("lastName", input));
 
