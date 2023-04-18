@@ -50,7 +50,7 @@ public class ReportTranformation {
         if (Objects.isNull(transformationObject))
             return EMPTY;
         try {
-            return (String) transformationObject.getMethod().invoke(transformationObject.getTransfromer(), inputItem);
+            return (String) transformationObject.getMethod().invoke(transformationObject.getTransformer(), inputItem);
         }
         catch (Exception e) {
             log.debug("transformation implementation could not be invoked for field {} contract type {} jurisdiction {}",

@@ -27,4 +27,9 @@ public class Transformer implements ReportTransformer {
     public String getJurisdiction(InputItem inputItem) {
         return inputItem.getJurisdiction().toUpperCase();
     }
+
+    @Transformation(fieldName = "endDate")
+    public String getEndDate(InputItem inputItem) {
+        return inputItem.getEndDate();
+    }
 }

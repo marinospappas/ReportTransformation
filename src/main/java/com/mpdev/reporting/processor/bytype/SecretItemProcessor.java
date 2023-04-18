@@ -32,6 +32,7 @@ public class SecretItemProcessor implements TypeSpecificProcessor {
         outputItem.setFirstName(reportTranformation.transformField("firstName", input).substring(0,1));
         outputItem.setLastName(reportTranformation.transformField("lastName", input).substring(0,1));
         outputItem.setJurisdiction(reportTranformation.transformField("jurisdiction", input));
+        outputItem.setEndDate(reportTranformation.transformField("endDate", input));
 
         return outputItem;
     }

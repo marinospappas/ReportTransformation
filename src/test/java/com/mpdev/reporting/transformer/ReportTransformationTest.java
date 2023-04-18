@@ -50,7 +50,7 @@ public class ReportTransformationTest {
         transformationMap.forEach((k,v) -> {
             log.info("Field {}", k.getFieldName());
             assertTrue(outputFieldsList.contains(k.getFieldName()),
-                    "wrong field name " + k.getFieldName() + " in class " + v.getTransfromer().getClass().getSimpleName());
+                    "wrong field name " + k.getFieldName() + " in class " + v.getTransformer().getClass().getSimpleName());
         });
     }
 

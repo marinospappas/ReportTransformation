@@ -32,6 +32,7 @@ public class PublicItemProcessor implements TypeSpecificProcessor {
         outputItem.setFirstName(reportTranformation.transformField("firstName", input));
         outputItem.setLastName(reportTranformation.transformField("lastName", input));
         outputItem.setJurisdiction(reportTranformation.transformField("jurisdiction", input));
+        outputItem.setEndDate(reportTranformation.transformField("endDate", input));
 
         return outputItem;
     }

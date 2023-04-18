@@ -8,6 +8,6 @@ import java.lang.reflect.Method;
 @Data
 @AllArgsConstructor
 public class TransformerMapData {
-    private ReportTransformer transfromer;
+    private ReportTransformer transformer;
     private Method method;
 }
