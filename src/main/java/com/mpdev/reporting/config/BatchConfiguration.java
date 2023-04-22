@@ -33,19 +33,6 @@ public class BatchConfiguration {
     }
 
     @Bean
-    public FlatFileItemReader<InputItem> readerCsv() {
-        return new FlatFileItemReaderBuilder<InputItem>()
-                .name("csvItemReader")
-                .resource(new ClassPathResource("input-data.csv"))
-                .delimited()
-                .names("firstName", "lastName")
-                .fieldSetMapper(new BeanWrapperFieldSetMapper<>() {{
-                    setTargetType(InputItem.class);
-                }})
-                .build();
-    }
-
-    @Bean
     public FlatFileItemReader<InputItem> readerJson() {
         return new FlatFileItemReaderBuilder<InputItem>()
                 .name("jsonItemReader")
@@ -58,9 +45,8 @@ public class BatchConfiguration {
     public JdbcBatchItemWriter<OutputItem> writer(DataSource dataSource) {
         return new JdbcBatchItemWriterBuilder<OutputItem>()
                 .itemSqlParameterSourceProvider(new BeanPropertyItemSqlParameterSourceProvider<>())
-                .sql("INSERT INTO report (contract_id, last_name, first_name, item_type, jurisdiction, end_date) VALUES (:contractId, :lastName, :firstName, :itemType, :jurisdiction, :endDate)")
-                .sql("INSERT INTO report (contract_id, last_name, first_name, item_type, jurisdiction) " +
-                        "VALUES (:contractId, :lastName, :firstName, :itemType, :jurisdiction)")
+                .sql("INSERT INTO report (contract_id, last_name, first_name, item_type, jurisdiction, end_date) " +
+                        "VALUES (:contractId, :lastName, :firstName, :itemType, :jurisdiction, :endDate)")
                 .dataSource(dataSource)
                 .build();
     }
