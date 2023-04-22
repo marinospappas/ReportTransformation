@@ -1,6 +1,5 @@
 package com.mpdev.reporting.validation;
 
-import com.mpdev.reporting.report.ItemType;
 import com.mpdev.reporting.report.Jurisdiction;
 import com.mpdev.reporting.report.outreport.OutputItem;
 import lombok.extern.slf4j.Slf4j;

@@ -1,36 +1,36 @@
 package com.mpdev.reporting.processor.bytype;
 
+import com.mpdev.reporting.transformation.ReportTranformation;
 import com.mpdev.reporting.report.ItemType;
 import com.mpdev.reporting.report.inreport.InputItem;
 import com.mpdev.reporting.report.outreport.OutputItem;
-import com.mpdev.reporting.transformation.ReportTranformation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
 @Slf4j
 @Component
-public class ConfidentialItemProcessor implements TypeSpecificProcessor {
+public class PublicItemStrategy implements ReportTypeSpecificStrategy {
 
-    public ConfidentialItemProcessor(ReportTranformation reportTranformation) {
+    private final ReportTranformation reportTranformation;
+
+    public PublicItemStrategy(ReportTranformation reportTranformation) {
         this.reportTranformation = reportTranformation;
     }
 
     @Override
-    public ItemType getProcessorType() {
-        return ItemType.Confidential;
+    public ItemType getReportType() {
+        return ItemType.Public;
     }
 
-    private final ReportTranformation reportTranformation;
-
     @Override
-    public OutputItem process(final InputItem input) {
+    public OutputItem apply(final InputItem input) {
 
-        log.info("Executing Confidential item processor");
+        log.info("Executing Public item processor");
         var outputItem = new OutputItem();
 
         outputItem.setContractId(reportTranformation.transformField("contractId", input));
         outputItem.setFirstName(reportTranformation.transformField("firstName", input));
-        outputItem.setLastName(reportTranformation.transformField("lastName", input).substring(0,1));
+        outputItem.setLastName(reportTranformation.transformField("lastName", input));
         outputItem.setJurisdiction(reportTranformation.transformField("jurisdiction", input));
         outputItem.setEndDate(reportTranformation.transformField("endDate", input));
 

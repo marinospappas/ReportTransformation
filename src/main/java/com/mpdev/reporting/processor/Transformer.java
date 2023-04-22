@@ -5,10 +5,8 @@ import com.mpdev.reporting.transformation.Transformation;
 import com.mpdev.reporting.report.inreport.InputItem;
 import org.springframework.stereotype.Component;
 
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.Date;
 
 @Component
 public class Transformer implements ReportTransformer {
@@ -34,7 +32,7 @@ public class Transformer implements ReportTransformer {
     }
 
     @Transformation(fieldName = "endDate")
-    public String getEndDateUk(InputItem inputItem) {
+    public String getEndDate(InputItem inputItem) {
         LocalDate date = LocalDate.parse(inputItem.getEndDate());
         return date.format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
     }

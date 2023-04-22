@@ -5,7 +5,6 @@ import com.mpdev.reporting.report.ItemType;
 import com.mpdev.reporting.report.inreport.InputItem;
 import com.mpdev.reporting.report.outreport.OutputItem;
 import com.mpdev.reporting.validation.OutputRecordValidator;
-import com.mpdev.reporting.validation.OutputRecordValidatorTest;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
@@ -27,11 +26,11 @@ public class InputItemProcessorTest {
     private InputItem inputItem;
     private InputItemProcessor inputItemProcessor;
     @Mock
-    private SecretItemProcessor secretItemProcessor;
+    private SecretItemStrategy secretItemStrategy;
     @Mock
-    private PublicItemProcessor publicItemProcessor;
+    private PublicItemStrategy publicItemStrategy;
     @Mock
-    private ConfidentialItemProcessor confidentialItemProcessor;
+    private ConfidentialItemStrategy confidentialItemStrategy;
     @Mock
     private OutputRecordValidator outputRecordValidator;
     @Mock
@@ -42,18 +41,18 @@ public class InputItemProcessorTest {
     @BeforeEach
     void setup() {
         closeable = MockitoAnnotations.openMocks(this);
-        when(publicItemProcessor.process(any(InputItem.class))).thenReturn(new OutputItem());
-        when(publicItemProcessor.getProcessorType()).thenReturn(ItemType.Public);
-        when(confidentialItemProcessor.process(any(InputItem.class))).thenReturn(new OutputItem());
-        when(confidentialItemProcessor.getProcessorType()).thenReturn(ItemType.Confidential);
-        when(secretItemProcessor.process(any(InputItem.class))).thenReturn(new OutputItem());
-        when(secretItemProcessor.getProcessorType()).thenReturn(ItemType.Secret);
+        when(publicItemStrategy.apply(any(InputItem.class))).thenReturn(new OutputItem());
+        when(publicItemStrategy.getReportType()).thenReturn(ItemType.Public);
+        when(confidentialItemStrategy.apply(any(InputItem.class))).thenReturn(new OutputItem());
+        when(confidentialItemStrategy.getReportType()).thenReturn(ItemType.Confidential);
+        when(secretItemStrategy.apply(any(InputItem.class))).thenReturn(new OutputItem());
+        when(secretItemStrategy.getReportType()).thenReturn(ItemType.Secret);
         inputItem = podamFactory.manufacturePojo(InputItem.class);
-        ProcessorByTypeFactory processorByTypeFactory;
-        processorByTypeFactory = new ProcessorByTypeFactory(List.of(
-                secretItemProcessor, confidentialItemProcessor, publicItemProcessor
+        StrategyByTypeFactory strategyByTypeFactory;
+        strategyByTypeFactory = new StrategyByTypeFactory(List.of(
+                secretItemStrategy, confidentialItemStrategy, publicItemStrategy
         ));
-        inputItemProcessor = new InputItemProcessor(processorByTypeFactory, outputRecordValidator);
+        inputItemProcessor = new InputItemProcessor(strategyByTypeFactory, outputRecordValidator);
     }
 
     @AfterEach
@@ -67,11 +66,11 @@ public class InputItemProcessorTest {
         when(outputRecordValidator.validate(any(OutputItem.class))).thenReturn(Set.of());
         inputItem.setItemType(ItemType.Public.name());
         var output = inputItemProcessor.process(inputItem);
-        verify(publicItemProcessor).process(any(InputItem.class));
+        verify(publicItemStrategy).apply(any(InputItem.class));
         assertNotNull(output);
         assertEquals("P", output.getItemType());
-        verify(secretItemProcessor, never()).process(any(InputItem.class));
-        verify(confidentialItemProcessor, never()).process(any(InputItem.class));
+        verify(secretItemStrategy, never()).apply(any(InputItem.class));
+        verify(confidentialItemStrategy, never()).apply(any(InputItem.class));
     }
 
     @Test
@@ -80,11 +79,11 @@ public class InputItemProcessorTest {
         when(outputRecordValidator.validate(any(OutputItem.class))).thenReturn(Set.of());
         inputItem.setItemType(ItemType.Secret.name());
         var output = inputItemProcessor.process(inputItem);
-        verify(secretItemProcessor).process(any(InputItem.class));
+        verify(secretItemStrategy).apply(any(InputItem.class));
         assertNotNull(output);
         assertEquals("S", output.getItemType());
-        verify(publicItemProcessor, never()).process(any(InputItem.class));
-        verify(confidentialItemProcessor, never()).process(any(InputItem.class));
+        verify(publicItemStrategy, never()).apply(any(InputItem.class));
+        verify(confidentialItemStrategy, never()).apply(any(InputItem.class));
     }
 
     @Test
@@ -93,11 +92,11 @@ public class InputItemProcessorTest {
         when(outputRecordValidator.validate(any(OutputItem.class))).thenReturn(Set.of());
         inputItem.setItemType(ItemType.Confidential.name());
         var output = inputItemProcessor.process(inputItem);
-        verify(confidentialItemProcessor).process(any(InputItem.class));
+        verify(confidentialItemStrategy).apply(any(InputItem.class));
         assertNotNull(output);
         assertEquals("C", output.getItemType());
-        verify(secretItemProcessor, never()).process(any(InputItem.class));
-        verify(publicItemProcessor, never()).process(any(InputItem.class));
+        verify(secretItemStrategy, never()).apply(any(InputItem.class));
+        verify(publicItemStrategy, never()).apply(any(InputItem.class));
     }
 
     @ParameterizedTest

@@ -1,6 +1,6 @@
 package com.mpdev.reporting.processor;
 
-import com.mpdev.reporting.processor.bytype.ProcessorByTypeFactory;
+import com.mpdev.reporting.processor.bytype.StrategyByTypeFactory;
 import com.mpdev.reporting.report.ItemType;
 import com.mpdev.reporting.report.inreport.InputItem;
 import com.mpdev.reporting.report.outreport.OutputItem;
@@ -16,11 +16,11 @@ import java.util.Objects;
 public class InputItemProcessor implements ItemProcessor<InputItem, OutputItem> {
 
     private final OutputRecordValidator outputRecordValidator;
-    private final ProcessorByTypeFactory processorByTypeFactory;
+    private final StrategyByTypeFactory strategyByTypeFactory;
 
-    public InputItemProcessor(ProcessorByTypeFactory processorByTypeFactory, OutputRecordValidator outputRecordValidator) {
+    public InputItemProcessor(StrategyByTypeFactory strategyByTypeFactory, OutputRecordValidator outputRecordValidator) {
         this.outputRecordValidator = outputRecordValidator;
-        this.processorByTypeFactory = processorByTypeFactory;
+        this.strategyByTypeFactory = strategyByTypeFactory;
     }
 
     @Override
@@ -36,10 +36,10 @@ public class InputItemProcessor implements ItemProcessor<InputItem, OutputItem> 
             return null;
         }
 
-        final var processor = processorByTypeFactory.getTypeSpecificProcessor(itemType);
-        if (Objects.nonNull(processor)) {
-            // tranformation
-            transformedRecord = processor.process(input);
+        final var strategy = strategyByTypeFactory.getTypeSpecificProcessor(itemType);
+        if (Objects.nonNull(strategy)) {
+            // transformation
+            transformedRecord = strategy.apply(input);
             transformedRecord.setItemType(itemType.getAbbreviation());
             log.info("Transformed input {} to {}", input, transformedRecord);
             // validation
