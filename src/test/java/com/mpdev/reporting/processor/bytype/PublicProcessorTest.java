@@ -16,20 +16,20 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class PublicProcessorTest {
 
     private InputItem inputItem;
-    private PublicItemProcessor publicItemProcessor;
+    private PublicItemStrategy publicItemStrategy;
     private final PodamFactoryImpl podamFactory = new PodamFactoryImpl();
 
     @BeforeEach
     void setup() {
         inputItem = podamFactory.manufacturePojo(InputItem.class);
         ReportTranformation reportTranformation = new ReportTranformation(List.of(new Transformer()));
-        publicItemProcessor = new PublicItemProcessor(reportTranformation);
+        publicItemStrategy = new PublicItemStrategy(reportTranformation);
     }
 
     @Test
     @DisplayName("Public items fields are transformed correctly")
     void testPublicItemFields() {
-        var output = publicItemProcessor.process(inputItem);
+        var output = publicItemStrategy.apply(inputItem);
         assertEquals(inputItem.getFirstName().toUpperCase(), output.getFirstName());
         assertEquals(inputItem.getLastName().toUpperCase(), output.getLastName());
         assertEquals(inputItem.getJurisdiction().toUpperCase(), output.getJurisdiction());

@@ -5,6 +5,9 @@ import com.mpdev.reporting.transformation.Transformation;
 import com.mpdev.reporting.report.inreport.InputItem;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+
 @Component
 public class Transformer implements ReportTransformer {
 
@@ -26,5 +29,11 @@ public class Transformer implements ReportTransformer {
     @Transformation(fieldName = "jurisdiction")
     public String getJurisdiction(InputItem inputItem) {
         return inputItem.getJurisdiction().toUpperCase();
+    }
+
+    @Transformation(fieldName = "endDate")
+    public String getEndDate(InputItem inputItem) {
+        LocalDate date = LocalDate.parse(inputItem.getEndDate());
+        return date.format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
     }
 }

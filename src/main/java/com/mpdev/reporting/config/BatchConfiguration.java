@@ -15,7 +15,6 @@ import org.springframework.batch.item.database.JdbcBatchItemWriter;
 import org.springframework.batch.item.database.builder.JdbcBatchItemWriterBuilder;
 import org.springframework.batch.item.file.FlatFileItemReader;
 import org.springframework.batch.item.file.builder.FlatFileItemReaderBuilder;
-import org.springframework.batch.item.file.mapping.BeanWrapperFieldSetMapper;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.ClassPathResource;
@@ -59,6 +58,7 @@ public class BatchConfiguration {
     public JdbcBatchItemWriter<OutputItem> writer(DataSource dataSource) {
         return new JdbcBatchItemWriterBuilder<OutputItem>()
                 .itemSqlParameterSourceProvider(new BeanPropertyItemSqlParameterSourceProvider<>())
+                .sql("INSERT INTO report (contract_id, last_name, first_name, item_type, jurisdiction, end_date) VALUES (:contractId, :lastName, :firstName, :itemType, :jurisdiction, :endDate)")
                 .sql("INSERT INTO report (contract_id, last_name, first_name, item_type, jurisdiction) " +
                         "VALUES (:contractId, :lastName, :firstName, :itemType, :jurisdiction)")
                 .dataSource(dataSource)

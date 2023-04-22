@@ -1,12 +1,5 @@
 package com.mpdev.reporting.validation;
 
-import com.mpdev.reporting.processor.InputItemProcessor;
-import com.mpdev.reporting.processor.Transformer;
-import com.mpdev.reporting.processor.bytype.ConfidentialItemProcessor;
-import com.mpdev.reporting.processor.bytype.ProcessorByTypeFactory;
-import com.mpdev.reporting.processor.bytype.PublicItemProcessor;
-import com.mpdev.reporting.processor.bytype.SecretItemProcessor;
-import com.mpdev.reporting.report.inreport.InputItem;
 import com.mpdev.reporting.report.outreport.OutputItem;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.jupiter.api.BeforeEach;

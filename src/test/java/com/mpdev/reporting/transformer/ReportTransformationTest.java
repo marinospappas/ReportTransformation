@@ -1,7 +1,7 @@
 package com.mpdev.reporting.transformer;
 
 import com.mpdev.reporting.processor.Transformer;
-import com.mpdev.reporting.processor.bytype.PublicItemProcessor;
+import com.mpdev.reporting.processor.bytype.PublicItemStrategy;
 import com.mpdev.reporting.transformation.ReportTranformation;
 import com.mpdev.reporting.transformation.ReportTransformer;
 import com.mpdev.reporting.report.inreport.InputItem;
@@ -25,7 +25,7 @@ import static org.mockito.Mockito.when;
 @Slf4j
 public class ReportTransformationTest {
     private final PodamFactoryImpl podamFactory = new PodamFactoryImpl();
-    private PublicItemProcessor publicItemProcessor;
+    private PublicItemStrategy publicItemStrategy;
     private ReportTranformation reportTranformation;
     private Transformer transformer;
     private List<ReportTransformer> reportTransformers;
@@ -38,7 +38,7 @@ public class ReportTransformationTest {
         transformer = mock(Transformer.class);
         reportTransformers = List.of(transformer);
         reportTranformation = new ReportTranformation(reportTransformers);
-        publicItemProcessor = new PublicItemProcessor(reportTranformation);
+        publicItemStrategy = new PublicItemStrategy(reportTranformation);
         inputItem = podamFactory.manufacturePojo(InputItem.class);
     }
 
@@ -50,7 +50,7 @@ public class ReportTransformationTest {
         transformationMap.forEach((k,v) -> {
             log.info("Field {}", k.getFieldName());
             assertTrue(outputFieldsList.contains(k.getFieldName()),
-                    "wrong field name " + k.getFieldName() + " in class " + v.getTransfromer().getClass().getSimpleName());
+                    "wrong field name " + k.getFieldName() + " in class " + v.getTransformer().getClass().getSimpleName());
         });
     }
 
@@ -65,8 +65,8 @@ public class ReportTransformationTest {
                     transformedFields.add(invocation.getArgument(0, String.class));
                     return RandomStringUtils.randomAlphabetic(10);
                 });
-        publicItemProcessor = new PublicItemProcessor(reportTranformation1);
-        publicItemProcessor.process(inputItem);
+        publicItemStrategy = new PublicItemStrategy(reportTranformation1);
+        publicItemStrategy.apply(inputItem);
         transformedFields.forEach(transformedField ->
             assertTrue(outputFieldsList.contains(transformedField),
                     "wrong field name " + transformedField + " (parameter to transformField call)")

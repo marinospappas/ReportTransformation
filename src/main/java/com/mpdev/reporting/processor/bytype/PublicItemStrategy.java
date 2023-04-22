@@ -9,21 +9,21 @@ import org.springframework.stereotype.Component;
 
 @Slf4j
 @Component
-public class PublicItemProcessor implements TypeSpecificProcessor {
+public class PublicItemStrategy implements ReportTypeSpecificStrategy {
 
     private final ReportTranformation reportTranformation;
 
-    public PublicItemProcessor(ReportTranformation reportTranformation) {
+    public PublicItemStrategy(ReportTranformation reportTranformation) {
         this.reportTranformation = reportTranformation;
     }
 
     @Override
-    public ItemType getProcessorType() {
+    public ItemType getReportType() {
         return ItemType.Public;
     }
 
     @Override
-    public OutputItem process(final InputItem input) {
+    public OutputItem apply(final InputItem input) {
 
         log.info("Executing Public item processor");
         var outputItem = new OutputItem();
@@ -32,6 +32,7 @@ public class PublicItemProcessor implements TypeSpecificProcessor {
         outputItem.setFirstName(reportTranformation.transformField("firstName", input));
         outputItem.setLastName(reportTranformation.transformField("lastName", input));
         outputItem.setJurisdiction(reportTranformation.transformField("jurisdiction", input));
+        outputItem.setEndDate(reportTranformation.transformField("endDate", input));
 
         return outputItem;
     }

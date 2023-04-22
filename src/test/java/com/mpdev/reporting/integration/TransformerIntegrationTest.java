@@ -2,15 +2,14 @@ package com.mpdev.reporting.integration;
 
 import com.mpdev.reporting.processor.InputItemProcessor;
 import com.mpdev.reporting.processor.Transformer;
-import com.mpdev.reporting.processor.bytype.ConfidentialItemProcessor;
-import com.mpdev.reporting.processor.bytype.ProcessorByTypeFactory;
-import com.mpdev.reporting.processor.bytype.PublicItemProcessor;
-import com.mpdev.reporting.processor.bytype.SecretItemProcessor;
+import com.mpdev.reporting.processor.bytype.ConfidentialItemStrategy;
+import com.mpdev.reporting.processor.bytype.StrategyByTypeFactory;
+import com.mpdev.reporting.processor.bytype.PublicItemStrategy;
+import com.mpdev.reporting.processor.bytype.SecretItemStrategy;
 import com.mpdev.reporting.transformation.ReportTranformation;
 import com.mpdev.reporting.report.ItemType;
 import com.mpdev.reporting.report.inreport.InputItem;
 import com.mpdev.reporting.validation.OutputRecordValidator;
-import com.mpdev.reporting.validation.OutputRecordValidatorTest;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -32,13 +31,13 @@ public class TransformerIntegrationTest {
     void setup() {
         inputItem = podamFactory.manufacturePojo(InputItem.class);
         inputItem.setContractId(RandomStringUtils.randomAlphanumeric(8));
-        ProcessorByTypeFactory processorByTypeFactory;
+        StrategyByTypeFactory strategyByTypeFactory;
         ReportTranformation reportTranformation = new ReportTranformation(List.of(new Transformer()));
-        processorByTypeFactory = new ProcessorByTypeFactory(List.of(
-                new PublicItemProcessor(reportTranformation), new ConfidentialItemProcessor(reportTranformation), new SecretItemProcessor(reportTranformation)
+        strategyByTypeFactory = new StrategyByTypeFactory(List.of(
+                new PublicItemStrategy(reportTranformation), new ConfidentialItemStrategy(reportTranformation), new SecretItemStrategy(reportTranformation)
         ));
         OutputRecordValidator outputRecordValidator = new OutputRecordValidator();
-        inputItemProcessor = new InputItemProcessor(processorByTypeFactory, outputRecordValidator);
+        inputItemProcessor = new InputItemProcessor(strategyByTypeFactory, outputRecordValidator);
     }
 
     @Test

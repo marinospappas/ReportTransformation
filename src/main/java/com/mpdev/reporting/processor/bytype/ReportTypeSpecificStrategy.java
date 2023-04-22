@@ -4,10 +4,10 @@ import com.mpdev.reporting.report.ItemType;
 import com.mpdev.reporting.report.inreport.InputItem;
 import com.mpdev.reporting.report.outreport.OutputItem;
 
-public interface TypeSpecificProcessor {
+public interface ReportTypeSpecificStrategy {
 
-    ItemType getProcessorType();
+    ItemType getReportType();
 
-    OutputItem process(final InputItem input);
+    OutputItem apply(final InputItem input);
 
 }

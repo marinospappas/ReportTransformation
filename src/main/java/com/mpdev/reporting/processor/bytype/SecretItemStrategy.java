@@ -9,29 +9,30 @@ import org.springframework.stereotype.Component;
 
 @Slf4j
 @Component
-public class ConfidentialItemProcessor implements TypeSpecificProcessor {
+public class SecretItemStrategy implements ReportTypeSpecificStrategy {
 
-    public ConfidentialItemProcessor(ReportTranformation reportTranformation) {
+    private final ReportTranformation reportTranformation;
+
+    public SecretItemStrategy(ReportTranformation reportTranformation) {
         this.reportTranformation = reportTranformation;
     }
 
     @Override
-    public ItemType getProcessorType() {
-        return ItemType.Confidential;
+    public ItemType getReportType() {
+        return ItemType.Secret;
     }
 
-    private final ReportTranformation reportTranformation;
-
     @Override
-    public OutputItem process(final InputItem input) {
+    public OutputItem apply(final InputItem input) {
 
-        log.info("Executing Confidential item processor");
+        log.info("Executing Secret item processor");
         var outputItem = new OutputItem();
 
         outputItem.setContractId(reportTranformation.transformField("contractId", input));
-        outputItem.setFirstName(reportTranformation.transformField("firstName", input));
+        outputItem.setFirstName(reportTranformation.transformField("firstName", input).substring(0,1));
         outputItem.setLastName(reportTranformation.transformField("lastName", input).substring(0,1));
         outputItem.setJurisdiction(reportTranformation.transformField("jurisdiction", input));
+        outputItem.setEndDate(reportTranformation.transformField("endDate", input));
 
         return outputItem;
     }
