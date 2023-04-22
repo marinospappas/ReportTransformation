@@ -59,7 +59,8 @@ public class BatchConfiguration {
     public JdbcBatchItemWriter<OutputItem> writer(DataSource dataSource) {
         return new JdbcBatchItemWriterBuilder<OutputItem>()
                 .itemSqlParameterSourceProvider(new BeanPropertyItemSqlParameterSourceProvider<>())
-                .sql("INSERT INTO report (contract_id, last_name, first_name, item_type, jurisdiction) VALUES (:contractId, :lastName, :firstName, :itemType, :jurisdiction)")
+                .sql("INSERT INTO report (contract_id, last_name, first_name, item_type, jurisdiction) " +
+                        "VALUES (:contractId, :lastName, :firstName, :itemType, :jurisdiction)")
                 .dataSource(dataSource)
                 .build();
     }
