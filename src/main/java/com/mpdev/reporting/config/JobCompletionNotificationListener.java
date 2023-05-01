@@ -32,7 +32,8 @@ public class JobCompletionNotificationListener implements JobExecutionListener {
                             rs.getString(4),
                             rs.getString(5),
                             rs.getString(6),
-                            rs.getString(7))
+                            rs.getString(7),
+                            rs.getString(8))
             ).forEach(item -> log.info("Transformed item in db: {}", item));
         }
     }

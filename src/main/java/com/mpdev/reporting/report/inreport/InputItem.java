@@ -28,6 +28,8 @@ public class InputItem {
     private String jurisdiction;
     @JsonProperty("Version")
     private String version;
+    @JsonProperty("Agreement Number")
+    private String agreementNumber;
     @JsonProperty("Comments")
     private String comments;
 }

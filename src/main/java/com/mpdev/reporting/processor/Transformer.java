@@ -36,4 +36,9 @@ public class Transformer implements ReportTransformer {
         LocalDate date = LocalDate.parse(inputItem.getEndDate());
         return date.format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
     }
+
+    @Transformation(fieldName = "agreementNumber")
+    public String getAgreementNumber(InputItem inputItem) {
+        return inputItem.getAgreementNumber();
+    }
 }

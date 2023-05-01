@@ -30,4 +30,5 @@ public class OutputItem {
     private String itemType;
     private String jurisdiction;
     private String endDate;
+    private String agreementNumber;
 }

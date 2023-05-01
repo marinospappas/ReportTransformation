@@ -33,6 +33,7 @@ public class ConfidentialItemStrategy implements ReportTypeSpecificStrategy {
         outputItem.setLastName(reportTranformation.transformField("lastName", input).substring(0,1));
         outputItem.setJurisdiction(reportTranformation.transformField("jurisdiction", input));
         outputItem.setEndDate(reportTranformation.transformField("endDate", input));
+        outputItem.setAgreementNumber(reportTranformation.transformField("agreementNumber", input));
 
         return outputItem;
     }
