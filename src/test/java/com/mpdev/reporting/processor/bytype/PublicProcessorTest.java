@@ -6,6 +6,8 @@ import com.mpdev.reporting.report.inreport.InputItem;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 import uk.co.jemos.podam.api.PodamFactoryImpl;
 
 import java.util.List;
@@ -34,4 +36,18 @@ public class PublicProcessorTest {
         assertEquals(inputItem.getLastName().toUpperCase(), output.getLastName());
         assertEquals(inputItem.getJurisdiction().toUpperCase(), output.getJurisdiction());
     }
+
+    @ParameterizedTest
+    @CsvSource(nullValues = "null", value = {
+            "2024-09-01, UK, 01/09/2024",
+            "2024-09-01, EU, 01/09/2024",
+    })
+    @DisplayName("EndDate field is enriched according to Jurisdiction")
+    void testEndDate(String endDate, String jurisdiction, String expected) {
+        inputItem.setEndDate(endDate);
+        inputItem.setJurisdiction(jurisdiction);
+        var output = publicItemStrategy.apply(inputItem);
+        assertEquals(expected, output.getEndDate());
+    }
+
 }
