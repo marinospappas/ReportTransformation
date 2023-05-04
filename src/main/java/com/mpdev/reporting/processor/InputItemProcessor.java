@@ -7,8 +7,10 @@ import com.mpdev.reporting.report.outreport.OutputItem;
 import com.mpdev.reporting.validation.OutputRecordValidator;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.item.ItemProcessor;
+import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Component;
 
+import javax.validation.constraints.NotNull;
 import java.util.Objects;
 
 @Slf4j
@@ -24,7 +26,7 @@ public class InputItemProcessor implements ItemProcessor<InputItem, OutputItem> 
     }
 
     @Override
-    public OutputItem process(final InputItem input) {
+    public OutputItem process(@NonNull InputItem input) {
 
         OutputItem transformedRecord = null;
         final ItemType itemType;
