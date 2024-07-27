@@ -106,6 +106,7 @@ public class OutputRecordValidatorTest {
     void testAgreementNumberExceptionSecret(String agreementNumber, String itemType) {
         outputItem.setAgreementNumber(agreementNumber);
         outputItem.setItemType(itemType);
+        outputItem.setLastName("P");
         var result = outputRecordValidator.validate(outputItem);
         assertEquals(1, result.size());
         assertTrue(result.stream().findFirst().isPresent());
@@ -120,19 +121,21 @@ public class OutputRecordValidatorTest {
     void testAgreementNumberNoExceptionSecret(String agreementNumber, String itemType) {
         outputItem.setAgreementNumber(agreementNumber);
         outputItem.setItemType(itemType);
+        outputItem.setLastName("P");
         var result = outputRecordValidator.validate(outputItem);
         assertEquals(0, result.size());
     }
 
     @ParameterizedTest
     @CsvSource(nullValues = "null", value = {
-            "'', C", "null, C",
-            "'', P", "null, P",
+            "'', C, X", "null, C, X",
+            "'', P, Smith", "null, P, Smith",
     })
     @DisplayName("Agreement Number empty in non Secret record raises Exception")
-    void testAgreementNumberExceptionNonSecret(String agreementNumber, String itemType) {
+    void testAgreementNumberExceptionNonSecret(String agreementNumber, String itemType, String lastName) {
         outputItem.setAgreementNumber(agreementNumber);
         outputItem.setItemType(itemType);
+        outputItem.setLastName(lastName);
         var result = outputRecordValidator.validate(outputItem);
         assertEquals(1, result.size());
         assertTrue(result.stream().findFirst().isPresent());
@@ -141,12 +144,13 @@ public class OutputRecordValidatorTest {
 
     @ParameterizedTest
     @CsvSource(nullValues = "null", value = {
-            "abcd, C", "xyz, P",
+            "abcd, C, X", "xyz, P, Smith",
     })
     @DisplayName("Agreement Number filled in in non Secret record does not raise Exception")
-    void testAgreementNumberNoExceptionNonSecret(String agreementNumber, String itemType) {
+    void testAgreementNumberNoExceptionNonSecret(String agreementNumber, String itemType, String lastName) {
         outputItem.setAgreementNumber(agreementNumber);
         outputItem.setItemType(itemType);
+        outputItem.setLastName(lastName);
         var result = outputRecordValidator.validate(outputItem);
         assertEquals(0, result.size());
     }

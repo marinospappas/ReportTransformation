@@ -1,6 +1,7 @@
 package com.mpdev.reporting.validation;
 
-import javax.validation.groups.Default;
+
+import jakarta.validation.groups.Default;
 
 public class ValidationGroups {
     public interface SecretRecord extends Default {}

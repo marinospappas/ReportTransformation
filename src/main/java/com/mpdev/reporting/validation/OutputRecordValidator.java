@@ -5,19 +5,19 @@ import com.mpdev.reporting.report.outreport.OutputItem;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
-import javax.validation.ConstraintViolation;
-import javax.validation.Validation;
-import javax.validation.Validator;
-import javax.validation.groups.Default;
+import jakarta.validation.groups.Default;
+import jakarta.validation.Validator;
+import jakarta.validation.ConstraintViolation;
 import java.util.Set;
 
 import static com.mpdev.reporting.report.ItemType.*;
 import static com.mpdev.reporting.validation.ValidationGroups.*;
+import static jakarta.validation.Validation.buildDefaultValidatorFactory;
 
 @Slf4j
 @Component
 public class OutputRecordValidator {
-    Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
+    Validator validator = buildDefaultValidatorFactory().getValidator();
 
     public Set<ConstraintViolation<OutputItem>> validate(OutputItem outputItem) {
 
